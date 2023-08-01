@@ -9,12 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.5",
+    "@mui/icons-material": "^5.13.7",
+    "@mui/material": "^5.13.7",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "axios": "^1.4.0",
     "next": "13.4.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "sass": "^1.63.6",
+    "scss": "^0.2.4",
     "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "prettier": "3.0.0"
   }
 }
