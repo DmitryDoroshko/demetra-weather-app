@@ -29,7 +29,7 @@ const cities = [
 export function SelectCityForm() {
   const {selectedCity, setSelectedCity} = useContext(WeatherContext);
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setSelectedCity(event.target.value as SelectedCity);
   };
 
