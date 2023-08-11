@@ -5,8 +5,8 @@ import {FormControlLabel, FormGroup, Switch} from "@mui/material";
 export const SwitchUnitSystem = () => {
   const {unitSystem, setUnitSystem} = useContext(WeatherContext);
 
-  const handleChange = ({target: {checked}}) => {
-    if (checked) {
+  const handleChange = (event: any) => {
+    if (event.target.checked) {
       setUnitSystem("metric");
     } else {
       setUnitSystem("imperial");

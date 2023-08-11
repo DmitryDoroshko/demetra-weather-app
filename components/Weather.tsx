@@ -3,7 +3,7 @@ import {WeatherContext} from "@/store/weather-context";
 import {CircularProgress} from "@mui/material";
 
 export const Weather = () => {
-  const {isWeatherLoading, weather, unitSystem, selectedCity} = useContext(WeatherContext);
+  const {isWeatherLoading, weather, unitSystem, selectedCity, currentDate} = useContext(WeatherContext);
 
   const selectedCityCapitalized = selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1, selectedCity.length);
 
@@ -12,6 +12,7 @@ export const Weather = () => {
         {isWeatherLoading && <CircularProgress/>}
 
         {weather && (<main style={{fontSize: "3rem"}}>
+          <div>Current date: {currentDate?.toISOString()}</div>
           <div>Location: {selectedCityCapitalized}</div>
           <div>Condition: {weather.condition}</div>
           <div>Temperature: {unitSystem === "metric" ? `${weather.temperature.celsius}C` : `${weather.temperature.fahrenheit}F`}</div>

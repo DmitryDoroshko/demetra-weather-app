@@ -4,16 +4,19 @@ import axios from "axios";
 import {LOCAL_STORAGE_IDENTIFIER, WEATHER_API_URL} from "@/utils/constants";
 
 type WeatherContext = {
+  currentDate: Date | null;
   selectedCity: SelectedCity;
-  weather: Weather;
+  weather: Weather | null;
   unitSystem: UnitSystem;
   setSelectedCity: (selectedCity: SelectedCity) => void;
   setUnitSystem: (unitSystem: UnitSystem) => void;
   isWeatherLoading: boolean;
   setIsWeatherLoading: (isLoading: boolean) => void;
+  setWeather: (weather: Weather) => void;
 };
 
 export const WeatherContext = createContext<WeatherContext>({
+  currentDate: null,
   selectedCity: "chernihiv",
   unitSystem: "metric",
   weather: {
@@ -30,20 +33,27 @@ export const WeatherContext = createContext<WeatherContext>({
       celsius: null,
       fahrenheit: null,
     },
+    condition: ""
   },
-  setSelectedCity: null,
-  setUnitSystem: null,
+  setSelectedCity: () => {
+  },
+  setUnitSystem: () => {
+  },
   isWeatherLoading: false,
-  setIsWeatherLoading: null,
+  setIsWeatherLoading: () => {
+  },
+  setWeather: () => {
+  },
 });
 
 let isInitialAppLoad = true;
 
-export const WeatherProvider = ({children}: {children: React.ReactNode}) => {
+export const WeatherProvider = ({children}: { children: React.ReactNode }) => {
   const [selectedCity, setSelectedCity] = useState<SelectedCity>("chernihiv");
   const [unitSystem, setUnitSystem] = useState<UnitSystem>("metric");
+  const [currentDate, setCurrentDate] = useState<Date | null>(new Date());
   const [isWeatherLoading, setIsWeatherLoading] = useState<boolean>(false);
-  const [weather, setWeather] = useState<Weather>(null);
+  const [weather, setWeather] = useState<Weather | null>(null);
 
   useEffect(() => {
     if (isInitialAppLoad) {
@@ -55,12 +65,19 @@ export const WeatherProvider = ({children}: {children: React.ReactNode}) => {
 
       setIsWeatherLoading(true);
       const dataFromLocalStorageAsObject = JSON.parse(dataFromLocalStorageExisting);
+      const currentDateFromLocalStorageAsDate = new Date(dataFromLocalStorageAsObject.currentDate);
+
+      if (currentDate instanceof Date && !(currentDate.getDay() === currentDateFromLocalStorageAsDate.getDay() ||
+          currentDate.getMonth() === currentDateFromLocalStorageAsDate.getMonth() ||
+          currentDate.getFullYear() === currentDateFromLocalStorageAsDate.getFullYear()
+      )) {
+        return;
+      }
+
       setSelectedCity(dataFromLocalStorageAsObject.selectedCity);
       setUnitSystem(dataFromLocalStorageAsObject.unitSystem);
       setWeather(dataFromLocalStorageAsObject.weather);
-
-      console.log({dataFromLocalStorageAsObject});
-
+      setCurrentDate(currentDateFromLocalStorageAsDate);
       setIsWeatherLoading(false);
       return;
     }
@@ -86,6 +103,7 @@ export const WeatherProvider = ({children}: {children: React.ReactNode}) => {
       };
       setWeather(weatherObj);
       localStorage.setItem(LOCAL_STORAGE_IDENTIFIER, JSON.stringify({
+        currentDate: new Date(),
         selectedCity,
         unitSystem,
         weather: weatherObj,
@@ -105,7 +123,8 @@ export const WeatherProvider = ({children}: {children: React.ReactNode}) => {
       setUnitSystem,
       isWeatherLoading,
       setIsWeatherLoading,
-      setWeather
+      setWeather,
+      currentDate
     }}>
     {children}
   </WeatherContext.Provider>;

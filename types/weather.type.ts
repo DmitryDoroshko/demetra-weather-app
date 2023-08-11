@@ -3,18 +3,18 @@ export type SelectedCity = "kiev" | "chernihiv" | "lviv" | "kharkiv" | "odesa";
 export type UnitSystem = "imperial" | "metric";
 
 export type Weather = {
-  condition: string;
+  condition: string | null;
   precipitation: {
-    millimeters: number;
-    inches: number;
+    millimeters: number | null;
+    inches: number | null;
   };
-  humidity: number;
+  humidity: number | null;
   wind: {
-    miles: number;
-    kilometers: number;
+    miles: number | null;
+    kilometers: number | null;
   };
   temperature: {
-    celsius: number;
-    fahrenheit: number;
+    celsius: number | null;
+    fahrenheit: number | null;
   };
 };
